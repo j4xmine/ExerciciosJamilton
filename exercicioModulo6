@@ -1,0 +1,72 @@
+abstract class Veiculo {
+
+    String nome;
+    int quantidadeRodas;
+
+    public Veiculo(String nome, int quantidadeRodas) {
+        this.nome = nome;
+        this.quantidadeRodas = quantidadeRodas;
+    }
+
+    abstract void acelerar();
+}
+
+interface Eletrificado {
+
+    void motorEletrico();
+}
+
+class Carro extends Veiculo {
+
+    public Carro(String nome, int quantidadeRodas) {
+        super(nome, quantidadeRodas);
+    }
+
+    @Override
+    void acelerar() {
+        System.out.println("Acelerar " + this.nome + " com " + this.quantidadeRodas + " rodas.");
+    }
+    void acelerar(int rpm) {
+        System.out.println("Acelerar " + this.nome + " com " + this.quantidadeRodas + " rodas, na intensidade de " + rpm + "rpm.");
+    }
+}
+
+class Moto extends Veiculo implements Eletrificado {
+
+    public Moto(String nome, int quantidadeRodas) {
+        super(nome, quantidadeRodas);
+    }
+
+    @Override
+    public void motorEletrico() {
+        System.out.println("Rodando com motor elétrico.");
+    }
+
+    @Override
+    void acelerar() {
+        System.out.print("Acelerar " + this.nome + " com " + this.quantidadeRodas + " rodas. - ");
+        motorEletrico();
+    }
+    void acelerar(int rpm) {
+        System.out.print("Acelerar " + this.nome + " com " + this.quantidadeRodas + " rodas, na intensidade de " + rpm + "rpm. - ");
+        motorEletrico();
+    }
+}
+
+
+
+class Scratch {
+    public static void main(String[] args) {
+
+        Carro c1 = new Carro("Golf GTI", 4);
+        c1.acelerar();
+
+        Moto m1 = new Moto("XJ6", 2);
+        m1.acelerar();
+
+        System.out.println("-------------------------------------------");
+
+        c1.acelerar(50);
+        m1.acelerar(100);
+    }
+}
