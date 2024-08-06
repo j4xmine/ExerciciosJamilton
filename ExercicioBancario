@@ -3,7 +3,7 @@ import kotlin.math.roundToLong
 // Não consegui formatar os números, professor. 
 class ContaBancaria constructor(agencia: String = "", conta: String = "", senha: String = "") {
 
-
+// A gente ainda não viu modificador de acesso, mas testei pra ver se era como em Java.
     private var usuarioAutenticado: Boolean = true
     private var saldo: Double = 0.0
     private var qtdSaques: Int = 0
