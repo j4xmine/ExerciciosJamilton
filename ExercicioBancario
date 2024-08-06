@@ -1,0 +1,68 @@
+import java.text.DecimalFormat
+import kotlin.math.roundToLong
+// Não consegui formatar os números, professor. 
+class ContaBancaria constructor(agencia: String = "", conta: String = "", senha: String = "") {
+
+
+    private var usuarioAutenticado: Boolean = true
+    private var saldo: Double = 0.0
+    private var qtdSaques: Int = 0
+    private var qtdDepositos: Int = 0
+
+    init {
+        if (usuarioAutenticado == true) {
+            println("Usuário autenticado.")
+            println("Agência: $agencia - Conta: $conta - Senha: $senha")
+        } else {
+            println("Usuário não autenticado.")
+        }
+    }
+
+    fun depositar(valorDeposito: Double) {
+        if (usuarioAutenticado == true) {
+            this.saldo += valorDeposito
+            println("Saldo atual: R$$saldo")
+            qtdDepositos++
+        } else {
+            println("Usuário não autenticado.")
+        }
+
+    }
+
+    fun sacar(valorSaque: Double) {
+        if (usuarioAutenticado == true) {
+            if (this.saldo < valorSaque) {
+                println("Saldo insuficiente. Não é possível sacar o valor de R$$valorSaque, pois você tem R$$saldo")
+            } else {
+                this.saldo -= valorSaque
+                println("Saldo restante: R$$saldo")
+                qtdSaques++
+            }
+        } else {
+            println("Usuário não autenticado.")
+        }
+
+
+    }
+
+    fun extrato(dias: Int) {
+        println("Extrato dos últimos $dias dias:")
+        println("Depositos: $qtdDepositos - Saques: $qtdSaques")
+        recuperarSaldo()
+    }
+
+    fun extrato(dataInicial: String, dataFinal: String) {
+        println("Extrato do dia: $dataInicial ao dia $dataFinal")
+        println("Depositos: $qtdDepositos - Saques: $qtdSaques")
+        recuperarSaldo()
+    }
+
+    fun recuperarSaldo() {
+        if (usuarioAutenticado == true) {
+            println("Saldo: R$$saldo")
+        } else {
+            println("Usuário não está autenticado. Saldo indisponível.")
+        }
+    }
+}
+
