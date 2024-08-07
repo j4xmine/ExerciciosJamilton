@@ -1,9 +1,9 @@
 import java.text.DecimalFormat
 import kotlin.math.roundToLong
-// Não consegui formatar os números, professor. 
+
 class ContaBancaria constructor(agencia: String = "", conta: String = "", senha: String = "") {
 
-// A gente ainda não viu modificador de acesso, mas testei pra ver se era como em Java.
+
     private var usuarioAutenticado: Boolean = true
     private var saldo: Double = 0.0
     private var qtdSaques: Int = 0
@@ -21,21 +21,24 @@ class ContaBancaria constructor(agencia: String = "", conta: String = "", senha:
     fun depositar(valorDeposito: Double) {
         if (usuarioAutenticado == true) {
             this.saldo += valorDeposito
-            println("Saldo atual: R$$saldo")
+            println("Você acabou de depositar R$${String.format("%.3f", valorDeposito)}")
+            recuperarSaldo()
             qtdDepositos++
         } else {
             println("Usuário não autenticado.")
         }
+
 
     }
 
     fun sacar(valorSaque: Double) {
         if (usuarioAutenticado == true) {
             if (this.saldo < valorSaque) {
-                println("Saldo insuficiente. Não é possível sacar o valor de R$$valorSaque, pois você tem R$$saldo")
+                println("Saldo insuficiente. Não é possível sacar o valor de R$${String.format("%.3f", valorSaque)}, pois você tem R$${String.format("%.3f", saldo)}")
             } else {
                 this.saldo -= valorSaque
-                println("Saldo restante: R$$saldo")
+                println("Você acabou de sacar R$${String.format("%.3f", valorSaque)}")
+                recuperarSaldo()
                 qtdSaques++
             }
         } else {
@@ -59,7 +62,7 @@ class ContaBancaria constructor(agencia: String = "", conta: String = "", senha:
 
     fun recuperarSaldo() {
         if (usuarioAutenticado == true) {
-            println("Saldo: R$$saldo")
+            println("Saldo: R$${String.format("%.3f", saldo)}")
         } else {
             println("Usuário não está autenticado. Saldo indisponível.")
         }
