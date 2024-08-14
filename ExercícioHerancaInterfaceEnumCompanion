@@ -1,0 +1,79 @@
+enum class StatusVeiculo {
+    FUNCIONAMENTO, MANUTENCAO, QUEBRADO
+}
+
+abstract class Veiculo(nome: String, quantidadeRodas: Int, var statusVeiculo: StatusVeiculo = StatusVeiculo.FUNCIONAMENTO) {
+
+    protected var nome: String
+    protected var quantidadeRodas: Int = 0
+
+    init {
+        this.nome = nome
+        this.quantidadeRodas = quantidadeRodas
+    }
+
+    abstract fun acelerar()
+
+    abstract fun recuperarStatus()
+}
+
+interface Eletrificado {
+    fun motorEletrico()
+}
+
+class Carro(nome: String, quantidadeRodas: Int): Veiculo(nome, quantidadeRodas){
+    override fun acelerar() {
+        println("Acelerar $nome com $quantidadeRodas rodas")
+    }
+    override fun recuperarStatus() {
+        println("Status do veículo: $statusVeiculo")
+    }
+
+    companion object {
+        fun velocidadeMaximaPorLei() {
+            println("Velocidade máxima permitida: 120km/h.")
+        }
+    }
+}
+
+class Moto(nome: String, quantidadeRodas: Int): Veiculo(nome, quantidadeRodas), Eletrificado {
+    override fun acelerar() {
+        println("Acelerar $nome com $quantidadeRodas rodas")
+        motorEletrico()
+    }
+    fun acelerar(intensidade: Int) {
+        println("Acelerar $nome com $quantidadeRodas rodas. Nível de intensidade: $intensidade rpm")
+        motorEletrico()
+    }
+    override fun motorEletrico() {
+        println("Rodando com motor elétrico.")
+    }
+    override fun recuperarStatus() {
+        println("Status do veículo: $statusVeiculo")
+    }
+
+    companion object {
+        fun velocidadeMaximaPorLei() {
+            println("Velocidade máxima permitida: 120km/h.")
+        }
+    }
+}
+
+fun main() {
+
+    val carro1 = Carro("Golf", 4)
+    carro1.acelerar()
+    carro1.statusVeiculo = StatusVeiculo.MANUTENCAO
+    carro1.recuperarStatus()
+    println("------------------------")
+    val moto1 = Moto("MT-09", 2)
+    moto1.acelerar()
+    moto1.recuperarStatus()
+    println("------------------------")
+    val moto2 = Moto("XJ6", 2)
+    moto2.acelerar(100)
+    moto2.recuperarStatus()
+    println("------------------------")
+    Carro.velocidadeMaximaPorLei()
+    Moto.velocidadeMaximaPorLei()
+}
