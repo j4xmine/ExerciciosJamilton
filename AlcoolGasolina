@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             if (!gasolinaVazia && !alcoolVazio) {
                 val intent = Intent(this, DetalhesActivity::class.java)
                 val valorGasolina: Double = gasolina.text.toString().toDouble()
-                val valorAlcool: Double = gasolina.text.toString().toDouble()
+                val valorAlcool: Double = alcool.text.toString().toDouble()
                 intent.putExtra("gasolina", valorGasolina)
                 intent.putExtra("alcool", valorAlcool)
                 startActivity(intent)
