@@ -1,0 +1,115 @@
+// MainActivity
+package com.example.alcoolougasolina
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.textfield.TextInputLayout
+
+class MainActivity : AppCompatActivity() {
+
+    lateinit var validGasolina: TextInputLayout
+    lateinit var validAlcool: TextInputLayout
+
+    lateinit var gasolina: EditText
+    lateinit var alcool: EditText
+
+    lateinit var botaoCalcular: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        validGasolina = findViewById(R.id.inputLayoutGasolina)
+        validAlcool = findViewById(R.id.inputLayoutAlcool)
+
+        gasolina = findViewById(R.id.precoGasolina)
+        alcool = findViewById(R.id.precoAlcool)
+
+        botaoCalcular = findViewById(R.id.button_calcular)
+
+        //
+
+
+
+
+        botaoCalcular.setOnClickListener{
+            validGasolina.error = null
+            validAlcool.error = null
+
+            val gasolinaVazia: Boolean = gasolina.text.toString().isEmpty()
+            val alcoolVazio: Boolean = alcool.text.toString().isEmpty()
+
+            if (gasolinaVazia) {
+                validGasolina.error = "Digite o valor da gasolina."
+            }
+            if (alcoolVazio) {
+                validAlcool.error = "Digite o valor do alcool."
+            }
+            if (!gasolinaVazia && !alcoolVazio) {
+                val intent = Intent(this, DetalhesActivity::class.java)
+                val valorGasolina: Double = gasolina.text.toString().toDouble()
+                val valorAlcool: Double = gasolina.text.toString().toDouble()
+                intent.putExtra("gasolina", valorGasolina)
+                intent.putExtra("alcool", valorAlcool)
+                startActivity(intent)
+            }
+        }
+    }
+}
+
+// ========================================================================================================================================================================================
+
+// DetalhesActivity
+
+package com.example.alcoolougasolina
+
+import android.os.Bundle
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
+class DetalhesActivity : AppCompatActivity() {
+
+    lateinit var valores: TextView
+    lateinit var resultado: TextView
+    lateinit var retorno: FloatingActionButton
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_detalhes)
+
+        val bundle = intent.extras
+        valores = findViewById(R.id.precoGasolinaAlcool)
+        resultado = findViewById(R.id.resultado)
+        retorno = findViewById(R.id.button_return)
+
+        if (bundle != null) {
+            val gasolina: Double = bundle.getDouble("gasolina")
+            val alcool: Double = bundle.getDouble("alcool")
+            valores.text = "Valores informados: \nGasolina: ${String.format("%.2f", gasolina)}\nAlcool: ${String.format("%.2f", alcool)}"
+            val melhorConsumo: Double = calcular(gasolina, alcool)
+            if (melhorConsumo > 0.7) {
+                resultado.text = "Gasolina"
+            } else {
+                resultado.text = "Alcool"
+            }
+        }
+
+        retorno.setOnClickListener{
+            finish()
+        }
+    }
+
+    fun calcular(gasolina: Double, alcool: Double): Double {
+        return alcool/gasolina
+    }
+}
